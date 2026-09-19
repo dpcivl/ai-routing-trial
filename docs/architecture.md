@@ -5,9 +5,9 @@
 ```mermaid
 flowchart LR
     U[사용자 입력<br/>텍스트 + 이미지] --> R{라우터}
-    R -->|이미지 있음| V[vision 모델<br/>ministral-3:8b]
+    R -->|이미지 있음| V[vision 모델<br/>gemma4:12b]
     R -->|텍스트 분류: reasoning| RS[추론 모델<br/>deepseek-r1:8b]
-    R -->|텍스트 분류: coding| C[코딩 모델<br/>qwen2.5-coder:7b]
+    R -->|텍스트 분류: coding| C[코딩 모델<br/>devstral-small-2]
     R -->|텍스트 분류: vision| V
     R -->|확신도 낮음| RS
     RS --> B[(OpenAI 호환 API<br/>Ollama / vLLM)]

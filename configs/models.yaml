@@ -24,23 +24,26 @@ default_category: reasoning
 
 # 카테고리별 모델. 키 이름(reasoning / coding / vision)은 코드의 Category와 일치해야 합니다.
 #
-# [메모리 기준] 이 맥북(16GB)에서 모델 하나에 쓸 수 있는 메모리는 약 10GB 안팎입니다.
-# 그래서 로컬용은 모델 파일이 ~10GB 이하인 것만 골랐습니다.
-# 아래 "회사(vLLM)용 후보"는 큰 모델이라 이 맥북에서는 돌리지 않고, 서버로 옮길 때 교체해서 비교합니다.
+# [확정 2026-09-19] reasoning=deepseek-r1:8b, coding=devstral-small-2, vision=gemma4:12b
+#
+# [메모리 주의] 이 맥북(16GB)에서 모델 하나에 쓸 수 있는 메모리는 약 10GB 안팎입니다(추정).
+# devstral-small-2(15GB)는 이 기준을 넘습니다. 일부가 CPU/디스크로 넘어가 매우 느릴 수 있으므로
+# 로컬에서 실제로 돌려 보고 너무 느리면 아래 주석의 대안(qwen2.5-coder:7b)으로 바꾸세요.
+# vLLM 서버(메모리 여유 있음)에서는 그대로 쓰면 됩니다.
 models:
   reasoning:
-    name: "deepseek-r1:8b"       # 5.2GB. DeepSeek-R1 증류(distill) 모델. 답하기 전에 '생각'을 먼저 출력함
+    name: "deepseek-r1:8b"       # 5.2GB. DeepSeek-R1-0528-Qwen3-8B 증류 모델. 답하기 전에 '생각'을 먼저 출력함
     temperature: 0.6             # DeepSeek-R1 권장값(0.5~0.7)
     max_tokens: 4096             # 생각 과정이 길어서 다른 모델보다 넉넉하게
-    # 참고: deepseek-r1:14b(9.0GB)는 구형 증류 모델이라 8b(0528판)보다 점수가 낮음 → 쓸 이유 없음. docs/comparisons/ 참고
-    # 회사(vLLM)용 후보: gpt-oss:20b(14GB, 이 맥북에는 큼), deepseek-v4-flash
+    # 참고: deepseek-r1:14b(9.0GB)는 구형 증류 모델이라 8b(0528판)보다 점수가 낮음 → 쓸 이유 없음
+    # 회사(vLLM)용 후보: gpt-oss:20b(14GB)
   coding:
-    name: "qwen2.5-coder:7b"     # 4.7GB. 7B급에서 검증된 코딩 특화 모델
-    temperature: 0.2             # 코드는 일관성이 중요하므로 낮게
+    name: "devstral-small-2"     # 24B, 15GB, 컨텍스트 384K. SWE-bench Verified 65.8. Ollama 0.13.3 이상 필요
+    temperature: 0.15            # 코드는 일관성이 중요하므로 낮게
     max_tokens: 2048
-    # 회사(vLLM)용 후보: devstral-small-2:24b (15GB, 이미지 입력도 지원)
+    # 메모리 부족 시 대안: "qwen2.5-coder:7b"(4.7GB, 2024년 모델)
   vision:
-    name: "ministral-3:8b"       # 6.0GB. Mistral 계열 멀티모달(텍스트+이미지) 모델
+    name: "gemma4:12b"           # 7.6GB, 텍스트+이미지, 컨텍스트 256K. MMMU-Pro 69.1
     temperature: 0.4
     max_tokens: 1024
-    # 대안: "gemma4:12b"(7.6GB, Google), "minicpm-v:8b"(5.5GB, 2025년 모델이라 오래됨)
+    # 대안: "qwen3.5:9b"(6.6GB), "minicpm-v4.5:8b"(6.1GB, 문서/OCR에 강점)

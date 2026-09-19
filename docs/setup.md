@@ -16,12 +16,12 @@ ollama serve
 
 ## 2. 모델 다운로드
 
-`configs/models.yaml`에 적힌 모델을 받습니다. 합계 약 16GB입니다 (5.2 + 4.7 + 6.0).
+`configs/models.yaml`에 적힌 모델을 받습니다. 합계 약 28GB입니다 (5.2 + 15 + 7.6). 디스크 여유 공간을 확인하세요. 코딩 모델(devstral-small-2)은 Ollama 0.13.3 이상이 필요합니다.
 
 ```bash
 ollama pull deepseek-r1:8b
-ollama pull qwen2.5-coder:7b
-ollama pull ministral-3:8b
+ollama pull devstral-small-2
+ollama pull gemma4:12b
 ```
 
 받은 뒤 연결 상태를 확인합니다.

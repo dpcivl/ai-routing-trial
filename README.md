@@ -6,8 +6,8 @@ MacBook Pro M1 (RAM 16GB)과 [Ollama](https://ollama.com)에서 동작합니다.
 | 카테고리 | 담당 | 기본 모델 |
 |---|---|---|
 | `reasoning` | 일반 질문, 설명, 분석, 추론 | `deepseek-r1:8b` |
-| `coding` | 코드 작성, 디버깅, 리팩터링 | `qwen2.5-coder:7b` |
-| `vision` | 이미지 분석, UI/UX 디자인 질문 | `ministral-3:8b` |
+| `coding` | 코드 작성, 디버깅, 리팩터링 | `devstral-small-2` (24B, 15GB ⚠️) |
+| `vision` | 이미지 분석, UI/UX 디자인 질문 | `gemma4:12b` |
 
 모델은 [configs/models.yaml](configs/models.yaml)에서 바꿀 수 있습니다.
 
