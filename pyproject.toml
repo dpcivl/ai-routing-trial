@@ -6,6 +6,8 @@ readme = "README.md"
 authors = [
     { name = "dpcivl", email = "dpcivl713@gmail.com" }
 ]
+license = "MIT"
+license-files = ["LICENSE"]
 requires-python = ">=3.12"
 dependencies = [
     "openai>=3.16.2",

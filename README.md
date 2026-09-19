@@ -68,3 +68,7 @@ tests/                   단위 테스트
 - [구조와 설계 결정](docs/architecture.md)
 - [라우팅 평가 보고서](docs/routing/)
 - [모델 후보 조사와 순위 (2026-09)](docs/comparisons/2026-09-model-selection.md)
+
+## 라이선스
+
+[MIT](LICENSE). 단, 이 레포는 모델 파일을 포함하지 않으며 각 모델은 자체 라이선스를 따릅니다.
