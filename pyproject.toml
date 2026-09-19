@@ -35,5 +35,9 @@ line-length = 110
 # E/F: 기본 오류, I: import 정렬, UP: 최신 문법 권장, B: 흔한 버그 패턴
 select = ["E", "F", "I", "UP", "B"]
 
+[tool.ruff.lint.per-file-ignores]
+# 모델에 보내는 프롬프트 문장은 줄을 억지로 나누면 의미가 바뀔 수 있어 길이 제한을 두지 않습니다.
+"src/ai_router/routers/llm_classifier.py" = ["E501"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]

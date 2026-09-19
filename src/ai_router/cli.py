@@ -4,8 +4,9 @@
   uv run ai-router check                                  # Ollama 연결 및 모델 준비 상태 확인
   uv run ai-router ask "파이썬으로 퀵정렬 짜줘"            # 라우팅 후 모델 응답까지
   uv run ai-router ask "이 화면 개선점?" --image ui.png   # 이미지 첨부 → vision 모델
-  uv run ai-router ask "..." --dry-run                    # 라우팅 판단만 확인 (Ollama 불필요)
-  uv run ai-router eval-routing                           # 라우터 정확도 평가 + 보고서 생성
+  uv run ai-router ask "..." --dry-run                    # 라우팅 판단만 확인 (rule 라우터는 Ollama 불필요)
+  uv run ai-router ask "..." --router llm                 # 소형 LLM 분류기로 라우팅 (Ollama 필요)
+  uv run ai-router eval-routing --router llm              # 라우터 정확도 평가 + 보고서 생성
 
 argparse는 파이썬 표준 라이브러리의 명령행 인자 파서입니다.
 C의 getopt와 같은 역할을 하며, 서브커맨드(check/ask/eval-routing)도 지원합니다.
@@ -27,9 +28,8 @@ from ai_router.types import UserRequest
 DEFAULT_DATASET = PROJECT_ROOT / "data" / "eval" / "routing_v1.jsonl"
 
 
-def _make_router(name: str, config: AppConfig, threshold: float) -> Router:
-    router_cls = ROUTERS[name]
-    return router_cls(default_category=config.default_category, confidence_threshold=threshold)
+def _make_router(name: str, config: AppConfig, backend: OpenAICompatBackend, threshold: float) -> Router:
+    return ROUTERS[name].from_config(config, backend, threshold)
 
 
 def cmd_check(args: argparse.Namespace, config: AppConfig) -> int:
@@ -41,21 +41,27 @@ def cmd_check(args: argparse.Namespace, config: AppConfig) -> int:
         print("❌ 서버에 연결할 수 없습니다. Ollama가 실행 중인지 확인하세요. (ollama serve)")
         return 1
 
+    # (역할 이름, 모델 이름) 목록. 라우터용 분류기도 함께 확인합니다.
+    targets = [(str(category), m.name) for category, m in config.models.items()]
+    if config.router_llm is not None:
+        targets.append(("router_llm", config.router_llm.name))
+
     ok = True
-    for category, model in config.models.items():
+    for role, model_name in targets:
         # Ollama는 "qwen3.5:9b" 형식, 태그를 생략하면 ":latest"로 취급합니다.
-        name = model.name if ":" in model.name else f"{model.name}:latest"
+        name = model_name if ":" in model_name else f"{model_name}:latest"
         if name in available:
-            print(f"✅ {category:<10} {model.name}")
+            print(f"✅ {role:<11} {model_name}")
         else:
-            print(f"❌ {category:<10} {model.name}  → 설치 필요: ollama pull {model.name}")
+            print(f"❌ {role:<11} {model_name}  → 설치 필요: ollama pull {model_name}")
             ok = False
     return 0 if ok else 1
 
 
 def cmd_ask(args: argparse.Namespace, config: AppConfig) -> int:
-    router = _make_router(args.router, config, args.threshold)
-    pipeline = RoutingPipeline(router, OpenAICompatBackend(config.backend), config)
+    backend = OpenAICompatBackend(config.backend)
+    router = _make_router(args.router, config, backend, args.threshold)
+    pipeline = RoutingPipeline(router, backend, config)
     request = UserRequest(text=args.prompt, image_paths=[Path(p) for p in args.image])
 
     for p in request.image_paths:
@@ -93,10 +99,14 @@ def cmd_ask(args: argparse.Namespace, config: AppConfig) -> int:
 
 
 def cmd_eval_routing(args: argparse.Namespace, config: AppConfig) -> int:
-    router = _make_router(args.router, config, args.threshold)
+    router = _make_router(args.router, config, OpenAICompatBackend(config.backend), args.threshold)
     dataset = Path(args.dataset).resolve()
     items = load_dataset(dataset)
-    records = run_eval(router, items)
+    try:
+        records = run_eval(router, items)
+    except APIConnectionError:
+        print("❌ 서버에 연결할 수 없습니다. --router llm 은 Ollama가 필요합니다. (ollama serve)")
+        return 1
     metrics = compute_metrics(records)
     env = environment_info(dataset)
 
@@ -118,7 +128,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--config", default=str(DEFAULT_CONFIG_PATH), help="모델 설정 YAML 경로")
     sub = parser.add_subparsers(dest="command", required=True)
 
-    # 여러 서브커맨드가 공유하는 라우터 옵션
+    # 여러 서브커맨드가 공유하는 라우터 옵션 (llm 라우터는 Ollama 서버가 필요)
     router_opts = argparse.ArgumentParser(add_help=False)
     router_opts.add_argument("--router", choices=sorted(ROUTERS), default="rule", help="사용할 라우터")
     router_opts.add_argument(
@@ -130,7 +140,11 @@ def build_parser() -> argparse.ArgumentParser:
     ask = sub.add_parser("ask", parents=[router_opts], help="프롬프트를 라우팅해서 모델 응답 받기")
     ask.add_argument("prompt", help="질문 내용")
     ask.add_argument("--image", action="append", default=[], help="첨부 이미지 경로 (여러 번 사용 가능)")
-    ask.add_argument("--dry-run", action="store_true", help="라우팅 판단만 하고 모델은 호출하지 않음")
+    ask.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="라우팅 판단만 하고 답변 모델은 호출하지 않음 (llm 라우터는 분류기용 Ollama 필요)",
+    )
 
     ev = sub.add_parser("eval-routing", parents=[router_opts], help="라우터 정확도 평가 + 보고서 생성")
     ev.add_argument("--dataset", default=str(DEFAULT_DATASET), help="평가 데이터(JSONL) 경로")

@@ -19,6 +19,8 @@ route() 의 처리 순서:
 import time
 from abc import ABC, abstractmethod
 
+from ai_router.backends.base import ChatBackend
+from ai_router.config import AppConfig
 from ai_router.types import Category, RouteDecision, UserRequest
 
 
@@ -33,6 +35,24 @@ class Router(ABC):
     ):
         self.default_category = default_category
         self.confidence_threshold = confidence_threshold
+
+    @classmethod
+    def from_config(cls, config: AppConfig, backend: ChatBackend, confidence_threshold: float) -> "Router":
+        """설정에서 라우터를 만드는 공장(factory) 메서드.
+
+        기본 구현은 백엔드가 필요 없는 라우터용입니다. 모델을 호출해야 하는 라우터(llm)는
+        이 메서드를 덮어써서 backend와 모델 설정을 받아 갑니다. 덕분에 CLI는 라우터 종류를
+        몰라도 `ROUTERS[name].from_config(...)` 한 줄로 만들 수 있습니다.
+        """
+        return cls(default_category=config.default_category, confidence_threshold=confidence_threshold)
+
+    def describe(self) -> dict[str, str]:
+        """결과 재현에 필요한 라우터 고유 설정 (보고서에 기록됨). 기본은 없음."""
+        return {}
+
+    def warmup(self) -> None:
+        """평가를 시작하기 전에 필요한 준비(예: 모델 로딩). 기본은 할 일 없음."""
+        return None  # 일부러 비워 둔 기본 구현 (하위 클래스가 필요하면 덮어씀)
 
     @abstractmethod
     def _classify(self, text: str) -> tuple[Category, float, str]:

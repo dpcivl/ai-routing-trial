@@ -65,6 +65,7 @@ def load_dataset(path: Path) -> list[EvalItem]:
 
 
 def run_eval(router: Router, items: list[EvalItem]) -> list[EvalRecord]:
+    router.warmup()  # LLM 라우터의 모델 로딩 시간이 지연 통계에 섞이지 않게 먼저 한 번 호출
     records = []
     for item in items:
         request = UserRequest(text=item.text, image_paths=[Path(p) for p in item.images])
@@ -155,6 +156,7 @@ def render_markdown(router: Router, env: dict, metrics: dict, records: list[Eval
         *[f"| {k} | `{v}` |" for k, v in env.items()],
         f"| confidence_threshold | `{router.confidence_threshold}` |",
         f"| default_category | `{router.default_category}` |",
+        *[f"| {k} | `{v}` |" for k, v in router.describe().items()],
         "",
         "## 요약",
         "",
