@@ -15,6 +15,7 @@ import base64
 import mimetypes
 import time
 from pathlib import Path
+from typing import Any
 
 from openai import OpenAI
 
@@ -51,6 +52,8 @@ class OpenAICompatBackend(ChatBackend):
         image_paths: list[Path] | None = None,
         temperature: float = 0.7,
         max_tokens: int = 2048,
+        system: str | None = None,
+        extra_body: dict[str, Any] | None = None,
     ) -> ChatResult:
         # --- 1. 메시지 구성 -------------------------------------------------
         # 이미지가 없으면 content는 단순 문자열입니다.
@@ -61,7 +64,10 @@ class OpenAICompatBackend(ChatBackend):
                 content.append({"type": "image_url", "image_url": {"url": _image_to_data_url(p)}})
         else:
             content = prompt
-        messages = [{"role": "user", "content": content}]
+        messages: list[dict] = []
+        if system:
+            messages.append({"role": "system", "content": system})
+        messages.append({"role": "user", "content": content})
 
         # --- 2. 스트리밍 요청 + 시간 측정 -----------------------------------
         # perf_counter는 시스템 시계 변경의 영향을 받지 않는 고해상도 타이머입니다.
@@ -79,6 +85,8 @@ class OpenAICompatBackend(ChatBackend):
             stream=True,
             # 스트림 마지막에 토큰 사용량(usage)을 함께 보내달라는 옵션
             stream_options={"include_usage": True},
+            # 엔진 전용 옵션. SDK가 모르는 필드도 요청 본문에 그대로 실려 나갑니다.
+            extra_body=extra_body or None,
         )
         for chunk in stream:
             # 마지막 chunk에는 choices가 비어 있고 usage만 들어 있습니다.

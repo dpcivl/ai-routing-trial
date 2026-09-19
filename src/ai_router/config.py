@@ -6,9 +6,10 @@ pydantic 모델로 한 번 검증하면 프로그램 시작 시점에 바로 에
 """
 
 from pathlib import Path
+from typing import Any
 
 import yaml
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from ai_router.types import Category
 
@@ -28,11 +29,16 @@ class ModelConfig(BaseModel):
     name: str
     temperature: float = 0.7
     max_tokens: int = 2048
+    # 요청 본문에 그대로 덧붙일 추가 필드 (엔진마다 다른 옵션용. 예: {"reasoning_effort": "none"}).
+    # 엔진 전용 옵션은 코드가 아니라 설정 파일에 두어야 Ollama ↔ vLLM 전환 때 코드를 안 고칩니다.
+    extra_body: dict[str, Any] = Field(default_factory=dict)
 
 
 class AppConfig(BaseModel):
     backend: BackendConfig
     default_category: Category
+    # LLM 분류기 라우터용 모델. `--router llm`을 쓰지 않으면 없어도 됩니다.
+    router_llm: ModelConfig | None = None
     # dict의 키가 Category로 검증되므로 "codng" 같은 오타는 로딩 시점에 에러가 납니다.
     models: dict[Category, ModelConfig]
 

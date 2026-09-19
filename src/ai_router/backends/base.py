@@ -10,6 +10,7 @@ ABC(Abstract Base Class)는 C++의 순수 가상 함수가 있는 클래스와 �
 
 from abc import ABC, abstractmethod
 from pathlib import Path
+from typing import Any
 
 from ai_router.types import ChatResult
 
@@ -23,8 +24,14 @@ class ChatBackend(ABC):
         image_paths: list[Path] | None = None,
         temperature: float = 0.7,
         max_tokens: int = 2048,
+        system: str | None = None,
+        extra_body: dict[str, Any] | None = None,
     ) -> ChatResult:
-        """모델에 프롬프트(와 이미지)를 보내고 응답과 측정값을 돌려줍니다."""
+        """모델에 프롬프트(와 이미지)를 보내고 응답과 측정값을 돌려줍니다.
+
+        system: 모델의 역할/규칙을 알려주는 시스템 메시지 (없으면 생략)
+        extra_body: 엔진 전용 추가 옵션 (요청 본문에 그대로 합쳐짐)
+        """
 
     @abstractmethod
     def list_models(self) -> list[str]:

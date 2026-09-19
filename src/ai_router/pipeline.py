@@ -35,5 +35,6 @@ class RoutingPipeline:
             image_paths=request.image_paths,
             temperature=model_cfg.temperature,
             max_tokens=model_cfg.max_tokens,
+            extra_body=model_cfg.extra_body,
         )
         return PipelineResult(request=request, decision=decision, chat=chat)
