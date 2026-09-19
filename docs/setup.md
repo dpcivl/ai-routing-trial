@@ -16,11 +16,12 @@ ollama serve
 
 ## 2. 모델 다운로드
 
-`configs/models.yaml`에 적힌 모델을 받습니다. 합계 약 28GB입니다 (5.2 + 15 + 7.6). 디스크 여유 공간을 확인하세요. 코딩 모델(devstral-small-2)은 Ollama 0.13.3 이상이 필요합니다.
+`configs/models.yaml`에 적힌 모델을 받습니다. 합계 약 20GB입니다 (분류기 2.7 + 5.2 + 4.7 + 7.6). 디스크 여유 공간을 확인하세요. 회사 vLLM 서버에서 쓸 `devstral-small-2`(15GB)는 이 맥북에는 받지 않습니다.
 
 ```bash
+ollama pull qwen3.5:2b
 ollama pull deepseek-r1:8b
-ollama pull devstral-small-2
+ollama pull qwen2.5-coder:7b
 ollama pull gemma4:12b
 ```
 

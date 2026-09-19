@@ -7,7 +7,7 @@ flowchart LR
     U[사용자 입력<br/>텍스트 + 이미지] --> R{라우터}
     R -->|이미지 있음| V[vision 모델<br/>gemma4:12b]
     R -->|텍스트 분류: reasoning| RS[추론 모델<br/>deepseek-r1:8b]
-    R -->|텍스트 분류: coding| C[코딩 모델<br/>devstral-small-2]
+    R -->|텍스트 분류: coding| C[코딩 모델<br/>qwen2.5-coder:7b]
     R -->|텍스트 분류: vision| V
     R -->|확신도 낮음| RS
     RS --> B[(OpenAI 호환 API<br/>Ollama / vLLM)]
@@ -48,8 +48,18 @@ flowchart LR
 - 기준값은 `--threshold`(기본 0.5)로 조절합니다.
 - 기준을 높이면 오분류는 줄지만 fallback이 늘어납니다. 이 관계(trade-off)도 측정해 볼 만한 주제입니다.
 
-### 5. 라우터 순서: 직접 구현 3종 → 오픈소스
+### 5. LLM 분류기 라우터의 설계 (`routers/llm_classifier.py`)
+- **동작:** 작은 모델(`qwen3.5:2b`)에게 "reasoning / coding / vision 중 하나만 답하라"고 시키고, 출력 문자열을 파싱합니다.
+- **생각 모드 끄기:** qwen3.5는 답하기 전에 "생각"을 합니다. 분류에는 불필요하고 `max_tokens`(32)를 다 써서 빈 응답이 나올 수 있으므로 `reasoning_effort: "none"`으로 끕니다. 이 옵션은 엔진마다 달라서 코드가 아니라 설정 파일(`router_llm.extra_body`)에 둡니다.
+- **확신도의 한계:** Ollama의 OpenAI 호환 API는 `logprobs`를 지원하지 않아 "얼마나 확신하는지"를 알 수 없습니다. 파싱에 성공하면 1.0, 실패하면 0.0(→ fallback)만 씁니다. 그래서 이 라우터에서는 `--threshold`가 사실상 의미가 없습니다.
+- **파싱 실패 처리:** 빈 응답, 카테고리 단어 없음, 서로 다른 카테고리가 섞임 → 기본 카테고리로 fallback. 실패 이유가 보고서의 "근거" 열에 남습니다.
+- **이미지가 있으면 분류기를 호출하지 않습니다.** 어차피 vision으로 가므로 시간과 메모리를 아낍니다.
+- **워밍업:** 평가 전에 분류기를 한 번 불러 모델을 메모리에 올립니다. 첫 로딩 시간이 지연 통계에 섞이는 것을 막기 위한 것이고, 콜드 스타트 시간은 별도로 재야 합니다.
+- **평가 데이터 오염 방지:** 프롬프트 안의 예시 문장은 평가셋(`routing_v1.jsonl`)과 겹치지 않게 따로 만들었습니다.
+- **비교할 후보:** `qwen3.5:0.8b`(1.0GB) / `qwen3.5:2b`(2.7GB, 기본값) / `ministral-3:3b`(3.0GB)
+
+### 6. 라우터 순서: 직접 구현 3종 → 오픈소스
 1. 규칙 기반 (`rule`) ✅
-2. 임베딩 유사도 (`embedding`): Ollama 임베딩 모델 사용 예정 (한국어를 지원하는 `bge-m3` 또는 `qwen3-embedding:0.6b`)
-3. 소형 LLM 분류기 (`llm`): 작은 모델(예: `qwen3.5:0.8b`, 1.0GB) 등
+2. 임베딩 유사도 (`embedding`): **보류**. Ollama 임베딩 모델 사용 예정 (한국어를 지원하는 `bge-m3` 또는 `qwen3-embedding:0.6b`)
+3. 소형 LLM 분류기 (`llm`) ✅ 구현됨 (실제 모델 측정 전)
 4. 오픈소스 비교: `semantic-router`, `RouteLLM` 등을 같은 평가셋으로 측정
