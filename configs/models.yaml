@@ -1,0 +1,46 @@
+# =============================================================================
+# 모델 설정 파일
+# -----------------------------------------------------------------------------
+# 코드를 고치지 않고 "어떤 역할에 어떤 모델을 쓸지"를 바꾸기 위한 파일입니다.
+# 임베디드에서 보드별 설정을 헤더 파일이나 Kconfig로 분리하는 것과 같은 목적입니다.
+#
+# 모델 이름은 Ollama 태그 형식(<모델명>:<크기>)입니다.
+# 사용 전에 `ollama pull <모델명>`으로 내려받아 두어야 합니다.
+# =============================================================================
+
+backend:
+  # Ollama와 vLLM 모두 "OpenAI 호환 API"를 제공합니다.
+  # 그래서 나중에 회사에서 vLLM으로 옮길 때는 이 주소만 바꾸면 됩니다.
+  #   - Ollama: http://localhost:11434/v1
+  #   - vLLM  : http://<서버주소>:8000/v1
+  base_url: "http://localhost:11434/v1"
+  # Ollama는 키를 검사하지 않지만 OpenAI SDK가 빈 값을 허용하지 않아 아무 문자열이나 넣습니다.
+  api_key: "ollama"
+  # 요청 하나에 기다리는 최대 시간(초). 모델을 처음 메모리에 올릴 때 시간이 걸리므로 넉넉하게 잡습니다.
+  timeout_sec: 300
+
+# 라우터가 판단을 못 했을 때(확신이 낮을 때) 보낼 기본 카테고리
+default_category: reasoning
+
+# 카테고리별 모델. 키 이름(reasoning / coding / vision)은 코드의 Category와 일치해야 합니다.
+#
+# [메모리 기준] 이 맥북(16GB)에서 모델 하나에 쓸 수 있는 메모리는 약 10GB 안팎입니다.
+# 그래서 로컬용은 모델 파일이 ~10GB 이하인 것만 골랐습니다.
+# 아래 "회사(vLLM)용 후보"는 큰 모델이라 이 맥북에서는 돌리지 않고, 서버로 옮길 때 교체해서 비교합니다.
+models:
+  reasoning:
+    name: "deepseek-r1:8b"       # 5.2GB. DeepSeek-R1 증류(distill) 모델. 답하기 전에 '생각'을 먼저 출력함
+    temperature: 0.6             # DeepSeek-R1 권장값(0.5~0.7)
+    max_tokens: 4096             # 생각 과정이 길어서 다른 모델보다 넉넉하게
+    # 참고: deepseek-r1:14b(9.0GB)는 구형 증류 모델이라 8b(0528판)보다 점수가 낮음 → 쓸 이유 없음. docs/comparisons/ 참고
+    # 회사(vLLM)용 후보: gpt-oss:20b(14GB, 이 맥북에는 큼), deepseek-v4-flash
+  coding:
+    name: "qwen2.5-coder:7b"     # 4.7GB. 7B급에서 검증된 코딩 특화 모델
+    temperature: 0.2             # 코드는 일관성이 중요하므로 낮게
+    max_tokens: 2048
+    # 회사(vLLM)용 후보: devstral-small-2:24b (15GB, 이미지 입력도 지원)
+  vision:
+    name: "ministral-3:8b"       # 6.0GB. Mistral 계열 멀티모달(텍스트+이미지) 모델
+    temperature: 0.4
+    max_tokens: 1024
+    # 대안: "gemma4:12b"(7.6GB, Google), "minicpm-v:8b"(5.5GB, 2025년 모델이라 오래됨)
