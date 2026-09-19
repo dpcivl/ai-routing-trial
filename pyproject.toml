@@ -1,0 +1,37 @@
+[project]
+name = "ai-router"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "dpcivl", email = "dpcivl713@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "openai>=3.16.2",
+    "pydantic>=2.13.5",
+    "pyyaml>=6.0.3",
+]
+
+[project.scripts]
+ai-router = "ai_router:main"
+
+[build-system]
+requires = ["uv_build>=0.12.3,<0.13.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+    "ruff>=0.16.8",
+]
+
+[tool.ruff]
+line-length = 110
+
+[tool.ruff.lint]
+# E/F: 기본 오류, I: import 정렬, UP: 최신 문법 권장, B: 흔한 버그 패턴
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
