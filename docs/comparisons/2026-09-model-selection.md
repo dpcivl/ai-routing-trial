@@ -1,7 +1,7 @@
 # [모델 비교] M1 16GB 기준 추론·코딩·비전 모델 후보 조사와 순위
 
 - 작성일: 2026-09-19
-- 조사 방식: 웹 조사 (모델 공식 카드 → 종합 벤치마크 사이트 → 2차 블로그 순으로 신뢰도를 두고 사용)
+- 조사 방식: **전용 조사 스킬은 사용하지 못했습니다.** 계정의 스킬 목록(`ListSkills`)과 검색(`SearchSkills`)에서 조사용 스킬을 찾지 못해, Claude Code의 웹 도구 `WebSearch`(검색)와 `WebFetch`(페이지 읽기)로 직접 조사했습니다. 신뢰도 순서는 모델 공식 카드 → 종합 벤치마크 사이트 → 2차 블로그입니다.
 - 성격: **논문·모델 카드에 공개된 수치를 모은 조사 문서**입니다. 이 맥북에서 직접 돌려서 잰 값이 아닙니다.
 - 후속 작업: 이 문서의 상위 후보를 우리 평가셋으로 직접 측정 (→ 7장)
 
@@ -167,3 +167,16 @@
 - [LocalLLM.in: 16GB VRAM 비교](https://localllm.in/blog/best-local-llms-16gb-vram) (gpt-oss:20b 수치, Artificial Analysis 인용)
 - [InsiderLLM: 로컬 코딩 모델](https://insiderllm.com/guides/best-local-coding-models-2026/) (HumanEval 수치. 메모리 수치는 일부 부정확)
 - [Artificial Analysis: Gemma 4 12B](https://artificialanalysis.ai/models/gemma-4-12b), [Ministral 3 8B](https://artificialanalysis.ai/models/ministral-3-8b), [Qwen3.5 9B](https://artificialanalysis.ai/models/qwen3-5-9b)
+
+---
+
+## 9. 확정 사항 (2026-09-19, 검토 후)
+
+| 카테고리 | 확정 모델 | 크기 | 비고 |
+|---|---|---|---|
+| 추론 | `deepseek-r1:8b` | 5.2GB | |
+| 코딩 | `devstral-small-2` | 15GB | ⚠️ 로컬 메모리 기준(≈10GB)을 넘음. 실제 속도를 측정해서 실용성을 판단하고, 너무 느리면 `qwen2.5-coder:7b`로 대체 |
+| 비전 | `gemma4:12b` | 7.6GB | |
+
+- 위 세 모델을 동시에 올리면 약 28GB라서, `OLLAMA_MAX_LOADED_MODELS=1`로 한 번에 하나씩 교체하며 씁니다. 모델이 바뀔 때마다 로딩 시간이 추가됩니다.
+- 15GB 모델은 이 맥북에서 메모리 압박(스왑)이 생길 가능성이 높습니다. 이 부분은 첫 벤치마크 문서의 핵심 측정 항목입니다.
