@@ -1,0 +1,45 @@
+{"id": "r01", "text": "양자컴퓨터가 기존 컴퓨터보다 빠른 이유를 쉽게 설명해줘", "expected": "reasoning"}
+{"id": "r02", "text": "전세와 월세 중 어떤 게 유리한지 장단점을 비교해줘", "expected": "reasoning"}
+{"id": "r03", "text": "기차 A는 시속 80km, 기차 B는 시속 120km로 마주 달린다. 거리가 400km면 몇 시간 뒤 만나?", "expected": "reasoning"}
+{"id": "r04", "text": "이 회의록을 세 줄로 요약해줘: 다음 분기 목표는 매출 20% 성장이며...", "expected": "reasoning"}
+{"id": "r05", "text": "스타트업이 초기에 B2B와 B2C 중 무엇을 택해야 할지 전략을 세워줘", "expected": "reasoning"}
+{"id": "r06", "text": "Why did the Roman Empire fall? Give three main reasons.", "expected": "reasoning"}
+{"id": "r07", "text": "모든 고양이는 동물이다. 어떤 동물은 검다. 따라서 어떤 고양이는 검다. 이 추론은 타당해?", "expected": "reasoning"}
+{"id": "r08", "text": "Summarize the pros and cons of remote work for a small team.", "expected": "reasoning"}
+{"id": "r09", "text": "오늘 저녁 메뉴 추천해줘", "expected": "reasoning", "note": "키워드 없음 → fallback으로 맞히는지"}
+{"id": "r10", "text": "RTOS와 베어메탈 펌웨어의 차이를 설명해줘", "expected": "reasoning", "note": "기술 용어지만 코드 작성 요청은 아님"}
+{"id": "r11", "text": "파이썬(비단뱀)은 어떤 환경에서 서식해?", "expected": "reasoning", "note": "함정: '파이썬' 키워드"}
+{"id": "r12", "text": "마이크로서비스 아키텍처를 도입할지 판단 기준을 정리해줘", "expected": "reasoning"}
+{"id": "r13", "text": "1부터 100까지 소수의 개수는 몇 개야? 과정도 보여줘", "expected": "reasoning"}
+{"id": "r14", "text": "Explain the difference between TCP and UDP to a beginner.", "expected": "reasoning"}
+{"id": "r15", "text": "우리 팀 신입 온보딩 계획을 4주 일정으로 짜줘", "expected": "reasoning", "note": "'짜줘'가 코드 요청처럼 보일 수 있음"}
+{"id": "c01", "text": "파이썬으로 퀵정렬 함수를 구현해줘", "expected": "coding"}
+{"id": "c02", "text": "이 코드에서 버그 찾아줘\n```c\nint *p; *p = 3;\n```", "expected": "coding"}
+{"id": "c03", "text": "Traceback (most recent call last):\n  File \"main.py\", line 3\nKeyError: 'name' 이거 왜 나?", "expected": "coding", "note": "'왜'가 있지만 에러 로그 질문"}
+{"id": "c04", "text": "Write a Rust function that reverses a linked list.", "expected": "coding"}
+{"id": "c05", "text": "SQL로 월별 매출 합계를 구하는 쿼리 작성해줘", "expected": "coding"}
+{"id": "c06", "text": "이메일 형식을 검사하는 정규식 만들어줘", "expected": "coding"}
+{"id": "c07", "text": "이 자바스크립트 코드를 async/await로 리팩터링해줘", "expected": "coding"}
+{"id": "c08", "text": "STM32에서 UART 인터럽트로 수신하는 예제 작성해줘", "expected": "coding", "note": "임베디드 용어, 일반 코딩 키워드 적음"}
+{"id": "c09", "text": "def add(a, b): return a - b\n이거 테스트 코드 pytest로 짜줘", "expected": "coding"}
+{"id": "c10", "text": "How do I fix 'undefined is not a function' error in my React app?", "expected": "coding"}
+{"id": "c11", "text": "FastAPI로 로그인 API 엔드포인트 만들어줘", "expected": "coding"}
+{"id": "c12", "text": "이진 탐색 알고리즘의 시간복잡도를 설명하고 C로 구현해줘", "expected": "coding", "note": "설명+구현 혼합"}
+{"id": "c13", "text": "git에서 마지막 커밋 메시지만 수정하는 방법?", "expected": "coding", "note": "키워드 거의 없음"}
+{"id": "c14", "text": "Dockerfile 작성해줘. 파이썬 3.12 기반으로", "expected": "coding"}
+{"id": "c15", "text": "CSS로 버튼을 가운데 정렬하려면 어떻게 해?", "expected": "coding", "note": "UI 관련이지만 구현 질문"}
+{"id": "v01", "text": "이 화면에서 개선할 점을 알려줘", "expected": "vision", "images": ["data/eval/images/placeholder_ui.png"]}
+{"id": "v02", "text": "What does this screenshot show?", "expected": "vision", "images": ["data/eval/images/placeholder_ui.png"]}
+{"id": "v03", "text": "이 에러 화면 보고 원인 알려줘", "expected": "vision", "images": ["data/eval/images/placeholder_error.png"], "note": "코딩 질문이지만 이미지가 있으므로 vision"}
+{"id": "v04", "text": "로그인 페이지 레이아웃을 어떻게 배치하면 좋을까?", "expected": "vision"}
+{"id": "v05", "text": "다크모드에 어울리는 배색 조합 추천해줘", "expected": "vision"}
+{"id": "v06", "text": "모바일 앱 온보딩 화면 UX 개선 아이디어 줘", "expected": "vision"}
+{"id": "v07", "text": "Suggest a font pairing for a minimalist portfolio design.", "expected": "vision"}
+{"id": "v08", "text": "대시보드 와이어프레임 구성을 제안해줘", "expected": "vision"}
+{"id": "v09", "text": "우리 서비스 로고 디자인 방향을 잡아줘", "expected": "vision"}
+{"id": "v10", "text": "이 시안 두 개 중 어떤 게 더 나아?", "expected": "vision", "images": ["data/eval/images/a.png", "data/eval/images/b.png"]}
+{"id": "v11", "text": "버튼 여백이 너무 좁아 보이는데 적절한 간격은?", "expected": "vision"}
+{"id": "v12", "text": "What color palette fits a healthcare app UI?", "expected": "vision"}
+{"id": "v13", "text": "설정 화면의 아이콘 스타일을 통일하고 싶어", "expected": "vision"}
+{"id": "v14", "text": "카드형 UI와 리스트형 UI 중 쇼핑몰에 뭐가 나아? 장단점 비교해줘", "expected": "vision", "note": "'비교','장단점'이 reasoning 신호"}
+{"id": "v15", "text": "이 그래프 해석해줘", "expected": "vision", "images": ["data/eval/images/chart.png"]}

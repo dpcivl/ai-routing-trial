@@ -1,0 +1,834 @@
+{
+  "router": "rule",
+  "environment": {
+    "timestamp": "2026-09-19T10:11:07+09:00",
+    "git_commit": "unknown (커밋 전)",
+    "dataset": "data/eval/routing_v1.jsonl",
+    "dataset_sha256": "d3ded35160fa",
+    "python": "3.12.13",
+    "machine": "Darwin arm64 26.6.2"
+  },
+  "metrics": {
+    "total": 45,
+    "correct": 40,
+    "accuracy": 0.8888888888888888,
+    "fallback_count": 6,
+    "latency_ms": {
+      "mean": 0.02629902187941803,
+      "p95": 0.041624996811151505,
+      "max": 0.06108300294727087
+    },
+    "per_category": {
+      "reasoning": {
+        "precision": 0.7777777777777778,
+        "recall": 0.9333333333333333,
+        "support": 15
+      },
+      "coding": {
+        "precision": 0.9230769230769231,
+        "recall": 0.8,
+        "support": 15
+      },
+      "vision": {
+        "precision": 1.0,
+        "recall": 0.9333333333333333,
+        "support": 15
+      }
+    },
+    "confusion": {
+      "reasoning": {
+        "reasoning": 14,
+        "coding": 1,
+        "vision": 0
+      },
+      "coding": {
+        "reasoning": 3,
+        "coding": 12,
+        "vision": 0
+      },
+      "vision": {
+        "reasoning": 1,
+        "coding": 0,
+        "vision": 14
+      }
+    }
+  },
+  "records": [
+    {
+      "item": {
+        "id": "r01",
+        "text": "양자컴퓨터가 기존 컴퓨터보다 빠른 이유를 쉽게 설명해줘",
+        "expected": "reasoning",
+        "images": [],
+        "note": ""
+      },
+      "decision": {
+        "category": "reasoning",
+        "router_name": "rule",
+        "confidence": 1.0,
+        "reason": "reasoning=1['설명']",
+        "latency_ms": 0.043249980080872774,
+        "is_fallback": false
+      }
+    },
+    {
+      "item": {
+        "id": "r02",
+        "text": "전세와 월세 중 어떤 게 유리한지 장단점을 비교해줘",
+        "expected": "reasoning",
+        "images": [],
+        "note": ""
+      },
+      "decision": {
+        "category": "reasoning",
+        "router_name": "rule",
+        "confidence": 1.0,
+        "reason": "reasoning=2['비교', '장단점']",
+        "latency_ms": 0.03262498648837209,
+        "is_fallback": false
+      }
+    },
+    {
+      "item": {
+        "id": "r03",
+        "text": "기차 A는 시속 80km, 기차 B는 시속 120km로 마주 달린다. 거리가 400km면 몇 시간 뒤 만나?",
+        "expected": "reasoning",
+        "images": [],
+        "note": ""
+      },
+      "decision": {
+        "category": "reasoning",
+        "router_name": "rule",
+        "confidence": 0.0,
+        "reason": "확신도 0.00 < 기준 0.50 → 기본값(reasoning) 사용. 원래 판단: reasoning (매칭된 키워드 없음)",
+        "latency_ms": 0.048582995077595115,
+        "is_fallback": true
+      }
+    },
+    {
+      "item": {
+        "id": "r04",
+        "text": "이 회의록을 세 줄로 요약해줘: 다음 분기 목표는 매출 20% 성장이며...",
+        "expected": "reasoning",
+        "images": [],
+        "note": ""
+      },
+      "decision": {
+        "category": "reasoning",
+        "router_name": "rule",
+        "confidence": 1.0,
+        "reason": "reasoning=1['요약']",
+        "latency_ms": 0.036874989746138453,
+        "is_fallback": false
+      }
+    },
+    {
+      "item": {
+        "id": "r05",
+        "text": "스타트업이 초기에 B2B와 B2C 중 무엇을 택해야 할지 전략을 세워줘",
+        "expected": "reasoning",
+        "images": [],
+        "note": ""
+      },
+      "decision": {
+        "category": "reasoning",
+        "router_name": "rule",
+        "confidence": 1.0,
+        "reason": "reasoning=1['전략']",
+        "latency_ms": 0.03358299727551639,
+        "is_fallback": false
+      }
+    },
+    {
+      "item": {
+        "id": "r06",
+        "text": "Why did the Roman Empire fall? Give three main reasons.",
+        "expected": "reasoning",
+        "images": [],
+        "note": ""
+      },
+      "decision": {
+        "category": "reasoning",
+        "router_name": "rule",
+        "confidence": 1.0,
+        "reason": "reasoning=1['why']",
+        "latency_ms": 0.03704099799506366,
+        "is_fallback": false
+      }
+    },
+    {
+      "item": {
+        "id": "r07",
+        "text": "모든 고양이는 동물이다. 어떤 동물은 검다. 따라서 어떤 고양이는 검다. 이 추론은 타당해?",
+        "expected": "reasoning",
+        "images": [],
+        "note": ""
+      },
+      "decision": {
+        "category": "reasoning",
+        "router_name": "rule",
+        "confidence": 1.0,
+        "reason": "reasoning=1['추론']",
+        "latency_ms": 0.041624996811151505,
+        "is_fallback": false
+      }
+    },
+    {
+      "item": {
+        "id": "r08",
+        "text": "Summarize the pros and cons of remote work for a small team.",
+        "expected": "reasoning",
+        "images": [],
+        "note": ""
+      },
+      "decision": {
+        "category": "reasoning",
+        "router_name": "rule",
+        "confidence": 1.0,
+        "reason": "reasoning=2['pros and cons', 'summarize']",
+        "latency_ms": 0.03733299672603607,
+        "is_fallback": false
+      }
+    },
+    {
+      "item": {
+        "id": "r09",
+        "text": "오늘 저녁 메뉴 추천해줘",
+        "expected": "reasoning",
+        "images": [],
+        "note": "키워드 없음 → fallback으로 맞히는지"
+      },
+      "decision": {
+        "category": "reasoning",
+        "router_name": "rule",
+        "confidence": 0.0,
+        "reason": "확신도 0.00 < 기준 0.50 → 기본값(reasoning) 사용. 원래 판단: reasoning (매칭된 키워드 없음)",
+        "latency_ms": 0.016165984561666846,
+        "is_fallback": true
+      }
+    },
+    {
+      "item": {
+        "id": "r10",
+        "text": "RTOS와 베어메탈 펌웨어의 차이를 설명해줘",
+        "expected": "reasoning",
+        "images": [],
+        "note": "기술 용어지만 코드 작성 요청은 아님"
+      },
+      "decision": {
+        "category": "reasoning",
+        "router_name": "rule",
+        "confidence": 1.0,
+        "reason": "reasoning=2['설명', '차이']",
+        "latency_ms": 0.022666004952043295,
+        "is_fallback": false
+      }
+    },
+    {
+      "item": {
+        "id": "r11",
+        "text": "파이썬(비단뱀)은 어떤 환경에서 서식해?",
+        "expected": "reasoning",
+        "images": [],
+        "note": "함정: '파이썬' 키워드"
+      },
+      "decision": {
+        "category": "coding",
+        "router_name": "rule",
+        "confidence": 1.0,
+        "reason": "coding=1.5['파이썬']",
+        "latency_ms": 0.02341700019314885,
+        "is_fallback": false
+      }
+    },
+    {
+      "item": {
+        "id": "r12",
+        "text": "마이크로서비스 아키텍처를 도입할지 판단 기준을 정리해줘",
+        "expected": "reasoning",
+        "images": [],
+        "note": ""
+      },
+      "decision": {
+        "category": "reasoning",
+        "router_name": "rule",
+        "confidence": 1.0,
+        "reason": "reasoning=2['정리', '판단']",
+        "latency_ms": 0.0263339898083359,
+        "is_fallback": false
+      }
+    },
+    {
+      "item": {
+        "id": "r13",
+        "text": "1부터 100까지 소수의 개수는 몇 개야? 과정도 보여줘",
+        "expected": "reasoning",
+        "images": [],
+        "note": ""
+      },
+      "decision": {
+        "category": "reasoning",
+        "router_name": "rule",
+        "confidence": 0.0,
+        "reason": "확신도 0.00 < 기준 0.50 → 기본값(reasoning) 사용. 원래 판단: reasoning (매칭된 키워드 없음)",
+        "latency_ms": 0.025749992346391082,
+        "is_fallback": true
+      }
+    },
+    {
+      "item": {
+        "id": "r14",
+        "text": "Explain the difference between TCP and UDP to a beginner.",
+        "expected": "reasoning",
+        "images": [],
+        "note": ""
+      },
+      "decision": {
+        "category": "reasoning",
+        "router_name": "rule",
+        "confidence": 1.0,
+        "reason": "reasoning=2['explain', 'difference']",
+        "latency_ms": 0.03433300298638642,
+        "is_fallback": false
+      }
+    },
+    {
+      "item": {
+        "id": "r15",
+        "text": "우리 팀 신입 온보딩 계획을 4주 일정으로 짜줘",
+        "expected": "reasoning",
+        "images": [],
+        "note": "'짜줘'가 코드 요청처럼 보일 수 있음"
+      },
+      "decision": {
+        "category": "reasoning",
+        "router_name": "rule",
+        "confidence": 1.0,
+        "reason": "reasoning=1['계획']",
+        "latency_ms": 0.02441700780764222,
+        "is_fallback": false
+      }
+    },
+    {
+      "item": {
+        "id": "c01",
+        "text": "파이썬으로 퀵정렬 함수를 구현해줘",
+        "expected": "coding",
+        "images": [],
+        "note": ""
+      },
+      "decision": {
+        "category": "coding",
+        "router_name": "rule",
+        "confidence": 1.0,
+        "reason": "coding=3.5['함수', '구현', '파이썬']",
+        "latency_ms": 0.019458006136119366,
+        "is_fallback": false
+      }
+    },
+    {
+      "item": {
+        "id": "c02",
+        "text": "이 코드에서 버그 찾아줘\n```c\nint *p; *p = 3;\n```",
+        "expected": "coding",
+        "images": [],
+        "note": ""
+      },
+      "decision": {
+        "category": "coding",
+        "router_name": "rule",
+        "confidence": 1.0,
+        "reason": "coding=7['코드 블록(```)', '코드 키워드', '코드', '버그']",
+        "latency_ms": 0.034500000765547156,
+        "is_fallback": false
+      }
+    },
+    {
+      "item": {
+        "id": "c03",
+        "text": "Traceback (most recent call last):\n  File \"main.py\", line 3\nKeyError: 'name' 이거 왜 나?",
+        "expected": "coding",
+        "images": [],
+        "note": "'왜'가 있지만 에러 로그 질문"
+      },
+      "decision": {
+        "category": "coding",
+        "router_name": "rule",
+        "confidence": 0.75,
+        "reason": "reasoning=1['왜'], coding=3['파이썬 Traceback']",
+        "latency_ms": 0.06108300294727087,
+        "is_fallback": false
+      }
+    },
+    {
+      "item": {
+        "id": "c04",
+        "text": "Write a Rust function that reverses a linked list.",
+        "expected": "coding",
+        "images": [],
+        "note": ""
+      },
+      "decision": {
+        "category": "coding",
+        "router_name": "rule",
+        "confidence": 1.0,
+        "reason": "coding=2['function', 'rust']",
+        "latency_ms": 0.031041010515764356,
+        "is_fallback": false
+      }
+    },
+    {
+      "item": {
+        "id": "c05",
+        "text": "SQL로 월별 매출 합계를 구하는 쿼리 작성해줘",
+        "expected": "coding",
+        "images": [],
+        "note": ""
+      },
+      "decision": {
+        "category": "coding",
+        "router_name": "rule",
+        "confidence": 1.0,
+        "reason": "coding=1['쿼리']",
+        "latency_ms": 0.02466599107719958,
+        "is_fallback": false
+      }
+    },
+    {
+      "item": {
+        "id": "c06",
+        "text": "이메일 형식을 검사하는 정규식 만들어줘",
+        "expected": "coding",
+        "images": [],
+        "note": ""
+      },
+      "decision": {
+        "category": "coding",
+        "router_name": "rule",
+        "confidence": 1.0,
+        "reason": "coding=1['정규식']",
+        "latency_ms": 0.020750012481585145,
+        "is_fallback": false
+      }
+    },
+    {
+      "item": {
+        "id": "c07",
+        "text": "이 자바스크립트 코드를 async/await로 리팩터링해줘",
+        "expected": "coding",
+        "images": [],
+        "note": ""
+      },
+      "decision": {
+        "category": "coding",
+        "router_name": "rule",
+        "confidence": 1.0,
+        "reason": "coding=6['코드', '리팩터링', '스크립트', '자바스크립트', '자바']",
+        "latency_ms": 0.027875008527189493,
+        "is_fallback": false
+      }
+    },
+    {
+      "item": {
+        "id": "c08",
+        "text": "STM32에서 UART 인터럽트로 수신하는 예제 작성해줘",
+        "expected": "coding",
+        "images": [],
+        "note": "임베디드 용어, 일반 코딩 키워드 적음"
+      },
+      "decision": {
+        "category": "reasoning",
+        "router_name": "rule",
+        "confidence": 0.0,
+        "reason": "확신도 0.00 < 기준 0.50 → 기본값(reasoning) 사용. 원래 판단: reasoning (매칭된 키워드 없음)",
+        "latency_ms": 0.024958018912002444,
+        "is_fallback": true
+      }
+    },
+    {
+      "item": {
+        "id": "c09",
+        "text": "def add(a, b): return a - b\n이거 테스트 코드 pytest로 짜줘",
+        "expected": "coding",
+        "images": [],
+        "note": ""
+      },
+      "decision": {
+        "category": "coding",
+        "router_name": "rule",
+        "confidence": 1.0,
+        "reason": "coding=4['코드 키워드', '코드', '테스트 코드']",
+        "latency_ms": 0.038875004975125194,
+        "is_fallback": false
+      }
+    },
+    {
+      "item": {
+        "id": "c10",
+        "text": "How do I fix 'undefined is not a function' error in my React app?",
+        "expected": "coding",
+        "images": [],
+        "note": ""
+      },
+      "decision": {
+        "category": "coding",
+        "router_name": "rule",
+        "confidence": 1.0,
+        "reason": "coding=2['function', 'error']",
+        "latency_ms": 0.037874997360631824,
+        "is_fallback": false
+      }
+    },
+    {
+      "item": {
+        "id": "c11",
+        "text": "FastAPI로 로그인 API 엔드포인트 만들어줘",
+        "expected": "coding",
+        "images": [],
+        "note": ""
+      },
+      "decision": {
+        "category": "coding",
+        "router_name": "rule",
+        "confidence": 1.0,
+        "reason": "coding=1['api']",
+        "latency_ms": 0.023917004000395536,
+        "is_fallback": false
+      }
+    },
+    {
+      "item": {
+        "id": "c12",
+        "text": "이진 탐색 알고리즘의 시간복잡도를 설명하고 C로 구현해줘",
+        "expected": "coding",
+        "images": [],
+        "note": "설명+구현 혼합"
+      },
+      "decision": {
+        "category": "coding",
+        "router_name": "rule",
+        "confidence": 0.6666666666666666,
+        "reason": "reasoning=1['설명'], coding=2['구현', '알고리즘']",
+        "latency_ms": 0.028000009479001164,
+        "is_fallback": false
+      }
+    },
+    {
+      "item": {
+        "id": "c13",
+        "text": "git에서 마지막 커밋 메시지만 수정하는 방법?",
+        "expected": "coding",
+        "images": [],
+        "note": "키워드 거의 없음"
+      },
+      "decision": {
+        "category": "reasoning",
+        "router_name": "rule",
+        "confidence": 0.0,
+        "reason": "확신도 0.00 < 기준 0.50 → 기본값(reasoning) 사용. 원래 판단: reasoning (매칭된 키워드 없음)",
+        "latency_ms": 0.023125001462176442,
+        "is_fallback": true
+      }
+    },
+    {
+      "item": {
+        "id": "c14",
+        "text": "Dockerfile 작성해줘. 파이썬 3.12 기반으로",
+        "expected": "coding",
+        "images": [],
+        "note": ""
+      },
+      "decision": {
+        "category": "coding",
+        "router_name": "rule",
+        "confidence": 1.0,
+        "reason": "coding=1.5['파이썬']",
+        "latency_ms": 0.026625028112903237,
+        "is_fallback": false
+      }
+    },
+    {
+      "item": {
+        "id": "c15",
+        "text": "CSS로 버튼을 가운데 정렬하려면 어떻게 해?",
+        "expected": "coding",
+        "images": [],
+        "note": "UI 관련이지만 구현 질문"
+      },
+      "decision": {
+        "category": "reasoning",
+        "router_name": "rule",
+        "confidence": 0.0,
+        "reason": "확신도 0.00 < 기준 0.50 → 기본값(reasoning) 사용. 원래 판단: reasoning (매칭된 키워드 없음)",
+        "latency_ms": 0.021791987819597125,
+        "is_fallback": true
+      }
+    },
+    {
+      "item": {
+        "id": "v01",
+        "text": "이 화면에서 개선할 점을 알려줘",
+        "expected": "vision",
+        "images": [
+          "data/eval/images/placeholder_ui.png"
+        ],
+        "note": ""
+      },
+      "decision": {
+        "category": "vision",
+        "router_name": "rule",
+        "confidence": 1.0,
+        "reason": "이미지 1개 첨부 → vision 모델만 처리 가능",
+        "latency_ms": 0.0009999785106629133,
+        "is_fallback": false
+      }
+    },
+    {
+      "item": {
+        "id": "v02",
+        "text": "What does this screenshot show?",
+        "expected": "vision",
+        "images": [
+          "data/eval/images/placeholder_ui.png"
+        ],
+        "note": ""
+      },
+      "decision": {
+        "category": "vision",
+        "router_name": "rule",
+        "confidence": 1.0,
+        "reason": "이미지 1개 첨부 → vision 모델만 처리 가능",
+        "latency_ms": 0.00045899651013314724,
+        "is_fallback": false
+      }
+    },
+    {
+      "item": {
+        "id": "v03",
+        "text": "이 에러 화면 보고 원인 알려줘",
+        "expected": "vision",
+        "images": [
+          "data/eval/images/placeholder_error.png"
+        ],
+        "note": "코딩 질문이지만 이미지가 있으므로 vision"
+      },
+      "decision": {
+        "category": "vision",
+        "router_name": "rule",
+        "confidence": 1.0,
+        "reason": "이미지 1개 첨부 → vision 모델만 처리 가능",
+        "latency_ms": 0.00033300602808594704,
+        "is_fallback": false
+      }
+    },
+    {
+      "item": {
+        "id": "v04",
+        "text": "로그인 페이지 레이아웃을 어떻게 배치하면 좋을까?",
+        "expected": "vision",
+        "images": [],
+        "note": ""
+      },
+      "decision": {
+        "category": "vision",
+        "router_name": "rule",
+        "confidence": 1.0,
+        "reason": "vision=2['레이아웃', '배치']",
+        "latency_ms": 0.025125016691163182,
+        "is_fallback": false
+      }
+    },
+    {
+      "item": {
+        "id": "v05",
+        "text": "다크모드에 어울리는 배색 조합 추천해줘",
+        "expected": "vision",
+        "images": [],
+        "note": ""
+      },
+      "decision": {
+        "category": "vision",
+        "router_name": "rule",
+        "confidence": 1.0,
+        "reason": "vision=1['배색']",
+        "latency_ms": 0.021292013116180897,
+        "is_fallback": false
+      }
+    },
+    {
+      "item": {
+        "id": "v06",
+        "text": "모바일 앱 온보딩 화면 UX 개선 아이디어 줘",
+        "expected": "vision",
+        "images": [],
+        "note": ""
+      },
+      "decision": {
+        "category": "vision",
+        "router_name": "rule",
+        "confidence": 1.0,
+        "reason": "vision=2.5['화면', 'ux']",
+        "latency_ms": 0.023667002096772194,
+        "is_fallback": false
+      }
+    },
+    {
+      "item": {
+        "id": "v07",
+        "text": "Suggest a font pairing for a minimalist portfolio design.",
+        "expected": "vision",
+        "images": [],
+        "note": ""
+      },
+      "decision": {
+        "category": "vision",
+        "router_name": "rule",
+        "confidence": 1.0,
+        "reason": "vision=2['design', 'font']",
+        "latency_ms": 0.03354201908223331,
+        "is_fallback": false
+      }
+    },
+    {
+      "item": {
+        "id": "v08",
+        "text": "대시보드 와이어프레임 구성을 제안해줘",
+        "expected": "vision",
+        "images": [],
+        "note": ""
+      },
+      "decision": {
+        "category": "vision",
+        "router_name": "rule",
+        "confidence": 1.0,
+        "reason": "vision=1['와이어프레임']",
+        "latency_ms": 0.020082981791347265,
+        "is_fallback": false
+      }
+    },
+    {
+      "item": {
+        "id": "v09",
+        "text": "우리 서비스 로고 디자인 방향을 잡아줘",
+        "expected": "vision",
+        "images": [],
+        "note": ""
+      },
+      "decision": {
+        "category": "vision",
+        "router_name": "rule",
+        "confidence": 1.0,
+        "reason": "vision=2['디자인', '로고']",
+        "latency_ms": 0.021207990357652307,
+        "is_fallback": false
+      }
+    },
+    {
+      "item": {
+        "id": "v10",
+        "text": "이 시안 두 개 중 어떤 게 더 나아?",
+        "expected": "vision",
+        "images": [
+          "data/eval/images/a.png",
+          "data/eval/images/b.png"
+        ],
+        "note": ""
+      },
+      "decision": {
+        "category": "vision",
+        "router_name": "rule",
+        "confidence": 1.0,
+        "reason": "이미지 2개 첨부 → vision 모델만 처리 가능",
+        "latency_ms": 0.0002500019036233425,
+        "is_fallback": false
+      }
+    },
+    {
+      "item": {
+        "id": "v11",
+        "text": "버튼 여백이 너무 좁아 보이는데 적절한 간격은?",
+        "expected": "vision",
+        "images": [],
+        "note": ""
+      },
+      "decision": {
+        "category": "vision",
+        "router_name": "rule",
+        "confidence": 1.0,
+        "reason": "vision=1['여백']",
+        "latency_ms": 0.02462498378008604,
+        "is_fallback": false
+      }
+    },
+    {
+      "item": {
+        "id": "v12",
+        "text": "What color palette fits a healthcare app UI?",
+        "expected": "vision",
+        "images": [],
+        "note": ""
+      },
+      "decision": {
+        "category": "vision",
+        "router_name": "rule",
+        "confidence": 1.0,
+        "reason": "vision=2['color', 'ui']",
+        "latency_ms": 0.027624977519735694,
+        "is_fallback": false
+      }
+    },
+    {
+      "item": {
+        "id": "v13",
+        "text": "설정 화면의 아이콘 스타일을 통일하고 싶어",
+        "expected": "vision",
+        "images": [],
+        "note": ""
+      },
+      "decision": {
+        "category": "vision",
+        "router_name": "rule",
+        "confidence": 1.0,
+        "reason": "vision=2.5['화면', '아이콘']",
+        "latency_ms": 0.0219999928958714,
+        "is_fallback": false
+      }
+    },
+    {
+      "item": {
+        "id": "v14",
+        "text": "카드형 UI와 리스트형 UI 중 쇼핑몰에 뭐가 나아? 장단점 비교해줘",
+        "expected": "vision",
+        "images": [],
+        "note": "'비교','장단점'이 reasoning 신호"
+      },
+      "decision": {
+        "category": "reasoning",
+        "router_name": "rule",
+        "confidence": 0.6666666666666666,
+        "reason": "reasoning=2['비교', '장단점'], vision=1['ui']",
+        "latency_ms": 0.03337502130307257,
+        "is_fallback": false
+      }
+    },
+    {
+      "item": {
+        "id": "v15",
+        "text": "이 그래프 해석해줘",
+        "expected": "vision",
+        "images": [
+          "data/eval/images/chart.png"
+        ],
+        "note": ""
+      },
+      "decision": {
+        "category": "vision",
+        "router_name": "rule",
+        "confidence": 1.0,
+        "reason": "이미지 1개 첨부 → vision 모델만 처리 가능",
+        "latency_ms": 0.000333995558321476,
+        "is_fallback": false
+      }
+    }
+  ]
+}
