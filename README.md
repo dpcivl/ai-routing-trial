@@ -68,6 +68,7 @@ tests/                   단위 테스트
 ## 문서
 
 - [환경 구축](docs/setup.md)
+- [코드 읽는 순서 안내서](docs/code-walkthrough.md) ← 코드가 처음이면 여기부터
 - [구조와 설계 결정](docs/architecture.md)
 - [라우팅 평가 보고서](docs/routing/)
 - [모델 후보 조사와 순위 (2026-09)](docs/comparisons/2026-09-model-selection.md)
